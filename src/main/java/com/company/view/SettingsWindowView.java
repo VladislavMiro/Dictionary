@@ -70,6 +70,7 @@ public class SettingsWindowView extends JFrame {
                             "Изменено!",
                             JOptionPane.INFORMATION_MESSAGE);
                     controller.disconnectFromDataBase();
+                    controller.setSettingsForDataBaseManager(urlField.getText(), userNameField.getText(), password);
                     if(controller.connectToDataBase()){
                         JOptionPane.showMessageDialog(frame,
                                 "Подключение к базе данных успешно!",

@@ -75,6 +75,10 @@ public class SettingsWindowViewController {
         }
     }
 
+    public void setSettingsForDataBaseManager(String url, String username, String password) {
+        DataBaseManger.getDataBaseManager().setConfig(url,username,password);
+    }
+
     public boolean saveSettings(String url, String username, String password) {
         XMLFile file = new XMLFile("settings.xml");
         try {
