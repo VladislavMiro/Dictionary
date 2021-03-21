@@ -44,7 +44,6 @@ public class DataBaseManagerTests {
             connect();
 
             for (String key : testInput) {
-                key = "'%" + key + "%'";
                 ArrayList<Word> words = DataBaseManger.getDataBaseManager().selectRequest(key);
 
                 for (Word word: words) {
@@ -62,7 +61,7 @@ public class DataBaseManagerTests {
         ArrayList<Word> testInput = new ArrayList<>();
 
         for (int i=0; i<4; i++) {
-            testInput.add(new Word("'testWord"+ i + "'", "'exampleText"+ i + "'"));
+            testInput.add(new Word("testWord"+ i, "exampleText"+ i));
         }
 
         assertDoesNotThrow(() -> {
@@ -71,7 +70,7 @@ public class DataBaseManagerTests {
                 DataBaseManger.getDataBaseManager().insertRequest(newWord);
             }
 
-            ArrayList<Word> words = DataBaseManger.getDataBaseManager().selectRequest("'%test%'");
+            ArrayList<Word> words = DataBaseManger.getDataBaseManager().selectRequest("test");
 
             for (Word word: words) {
                 System.out.println(word.getId() + ") " + word.getWord() + ", " + word.getDescription());
@@ -87,7 +86,7 @@ public class DataBaseManagerTests {
 
         assertDoesNotThrow(() -> {
             connect();
-            ArrayList<Word> testInput = DataBaseManger.getDataBaseManager().selectRequest("'%test%'");
+            ArrayList<Word> testInput = DataBaseManger.getDataBaseManager().selectRequest("test");
 
             System.out.println("Записи для удаления:");
 
@@ -99,7 +98,7 @@ public class DataBaseManagerTests {
                 DataBaseManger.getDataBaseManager().deleteRequest(word);
             }
 
-            testInput = DataBaseManger.getDataBaseManager().selectRequest("'%test%'");
+            testInput = DataBaseManger.getDataBaseManager().selectRequest("test");
 
             if (testInput.isEmpty()) {
                 System.out.println("Данные удалены");
