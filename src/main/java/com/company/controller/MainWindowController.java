@@ -7,19 +7,21 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class MainWindowController {
 
-    private Vector<Word> arrayOfWords = new Vector<>();
-    private final Vector<String> namesVector = new Vector<>();
+    private ArrayList<Word> arrayOfWords = new ArrayList<>();
+    private final ArrayList<String> wordsList = new ArrayList<>();
 
-    public Vector<Word> getArrayOfWords() {
+    public ArrayList<Word> getArrayOfWords() {
         return arrayOfWords;
     }
 
-    public Vector<String> getNamesArray() { return namesVector; }
+    public String[] getNamesArray() {
+        String[] tmp = new String[wordsList.size()];
+        wordsList.toArray(tmp);
+        return tmp; }
 
     public MainWindowController() {
     }
@@ -66,9 +68,9 @@ public class MainWindowController {
     public boolean searchWord(String key) {
         key = "'%" + key + "%'";
         try {
-            namesVector.clear();
+            wordsList.clear();
             arrayOfWords = DataBaseManger.getDataBaseManager().selectRequest(key);
-            arrayOfWords.forEach(word -> namesVector.add(word.getWord()));
+            arrayOfWords.forEach(word -> wordsList.add(word.getWord()));
             if (!arrayOfWords.isEmpty()) {
                 System.out.println("Запись успешно найдена!");
                 return true;
@@ -77,7 +79,7 @@ public class MainWindowController {
                 return false;
             }
         } catch (SQLException e) {
-            namesVector.clear();
+            wordsList.clear();
             arrayOfWords.clear();
             System.out.println("Ошибка SQL запроса!");
             return false;

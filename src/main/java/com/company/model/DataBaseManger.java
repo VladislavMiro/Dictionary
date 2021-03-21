@@ -1,6 +1,7 @@
 package com.company.model;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 enum Request {
@@ -54,8 +55,8 @@ public class DataBaseManger {
         connection = DriverManager.getConnection(url, username, password);
     }
 
-    public Vector<Word> selectRequest(String key) throws SQLException {
-        Vector<Word> array = new Vector<>();
+    public ArrayList<Word> selectRequest(String key) throws SQLException {
+        ArrayList<Word> array = new ArrayList<>();
         Statement statement = connection.createStatement();
         String req = Request.SELECT.toString() + key + ";";
         ResultSet request = statement.executeQuery(req);

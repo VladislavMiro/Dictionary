@@ -123,7 +123,6 @@ public class MainWindowView extends JFrame {
                                 "Запись была удалена успешно.",
                                 "Запись удалена!",
                                 JOptionPane.INFORMATION_MESSAGE);
-
                     } else {
                         JOptionPane.showMessageDialog(frame,
                                 "Запись не была удалена.",
