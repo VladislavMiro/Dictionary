@@ -3,23 +3,6 @@ package com.company.model;
 import java.sql.*;
 import java.util.ArrayList;
 
-enum Request {
-    INSERT,
-    SELECT,
-    UPDATE,
-    DELETE;
-
-    @Override
-    public String toString() {
-        return switch (this) {
-            case SELECT -> "SELECT * FROM dict WHERE dict.word ILIKE ";
-            case INSERT -> "INSERT INTO dict(word,mean) VALUES(";
-            case UPDATE -> "UPDATE dict SET ";
-            case DELETE -> "DELETE FROM dict WHERE dict.id=";
-        };
-    }
-}
-
 public class DataBaseManger {
 
     private static DataBaseManger shared = new DataBaseManger();
@@ -56,34 +39,36 @@ public class DataBaseManger {
 
     public ArrayList<Word> selectRequest(String key) throws SQLException {
         ArrayList<Word> array = new ArrayList<>();
-        Statement statement = connection.createStatement();
-        String req = Request.SELECT.toString() + "'%" + key + "%'" + ";";
-        ResultSet request = statement.executeQuery(req);
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM dict WHERE dict.word ILIKE ?;");
+        statement.setString(1, "%" + key + "%");
+        ResultSet request = statement.executeQuery();
+
         while (request.next()) {
             array.add(new Word(request.getInt(1), request.getString(2), request.getString(3)));
         }
+
         return array;
     }
 
     public void insertRequest(Word word) throws SQLException {
-        Statement statement = connection.createStatement();
-        String request = Request.INSERT.toString() +
-                "'"+word.getWord()+"', '"+word.getDescription()+"');";
-        statement.executeUpdate(request);
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO dict(word,mean) VALUES(?,?);");
+        statement.setString(1,word.getWord());
+        statement.setString(2, word.getDescription());
+        statement.executeUpdate();
     }
 
     public void updateRequest(Word word) throws SQLException {
-        Statement statement = connection.createStatement();
-        String request = Request.UPDATE.toString() + "word='" +
-                word.getWord() + "', mean='" +
-                word.getDescription() + "' WHERE dict.id=" + word.getId() + ";";
-        statement.executeUpdate(request);
+        PreparedStatement statement = connection.prepareStatement("UPDATE dict SET word=?, mean=? WHERE dict.id=?;");
+        statement.setString(1, word.getWord());
+        statement.setString(2, word.getDescription());
+        statement.setInt(3, word.getId());
+        statement.executeUpdate();
     }
 
     public void deleteRequest(Word word) throws SQLException {
-        Statement statement = connection.createStatement();
-        String request = Request.DELETE.toString() + word.getId() + ";";
-        statement.executeUpdate(request);
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM dict WHERE dict.id=?;");
+        statement.setInt(1, word.getId());
+        statement.executeUpdate();
     }
 
     public void disconnect() throws SQLException { connection.close(); }

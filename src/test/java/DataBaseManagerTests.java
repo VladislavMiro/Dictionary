@@ -82,7 +82,40 @@ public class DataBaseManagerTests {
     }
 
     @Test
-    public void deleteRequest() {
+    public void updateRequestTest() {
+        assertDoesNotThrow(() -> {
+            connect();
+            ArrayList<Word> testInput = DataBaseManger.getDataBaseManager().selectRequest("test");
+
+            System.out.println("Записи для изменеия:");
+
+            for (Word word: testInput) {
+                System.out.println(word.getId() + ") " + word.getWord() + ", " + word.getDescription());
+            }
+
+            for (int i=0; i< testInput.size(); i++) {
+                Word tmp = testInput.get(i);
+                testInput.set(i, new Word(tmp.getId(), tmp.getWord(), tmp.getDescription() + i));
+            }
+
+            for (Word word: testInput) {
+                DataBaseManger.getDataBaseManager().updateRequest(word);
+            }
+
+            testInput = DataBaseManger.getDataBaseManager().selectRequest("test");
+
+            System.out.println("Измеенные данные:");
+
+            for (Word word: testInput) {
+                System.out.println(word.getId() + ") " + word.getWord() + ", " + word.getDescription());
+            }
+
+            disconnect();
+        });
+    }
+
+    @Test
+    public void deleteRequestTest() {
 
         assertDoesNotThrow(() -> {
             connect();
