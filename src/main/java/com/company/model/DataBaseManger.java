@@ -2,7 +2,6 @@ package com.company.model;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Vector;
 
 enum Request {
     INSERT,
@@ -25,8 +24,8 @@ public class DataBaseManger {
 
     private static DataBaseManger shared = new DataBaseManger();
     private static String url;
-    private static String username = "dictadmin";
-    private static String password = "943221";
+    private static String username;
+    private static String password;
     private static Connection connection = null;
 
     public static  DataBaseManger getDataBaseManager() {
@@ -58,7 +57,7 @@ public class DataBaseManger {
     public ArrayList<Word> selectRequest(String key) throws SQLException {
         ArrayList<Word> array = new ArrayList<>();
         Statement statement = connection.createStatement();
-        String req = Request.SELECT.toString() + key + ";";
+        String req = Request.SELECT.toString() + "'%" + key + "%'" + ";";
         ResultSet request = statement.executeQuery(req);
         while (request.next()) {
             array.add(new Word(request.getInt(1), request.getString(2), request.getString(3)));
@@ -68,15 +67,16 @@ public class DataBaseManger {
 
     public void insertRequest(Word word) throws SQLException {
         Statement statement = connection.createStatement();
-        String request = Request.INSERT.toString() + word.getWord() +", " + word.getDescription() +");";
+        String request = Request.INSERT.toString() +
+                "'"+word.getWord()+"', '"+word.getDescription()+"');";
         statement.executeUpdate(request);
     }
 
     public void updateRequest(Word word) throws SQLException {
         Statement statement = connection.createStatement();
-        String request = Request.UPDATE.toString() + "word=" +
-                word.getWord() + ", mean=" +
-                word.getDescription() + "WHERE dict.id=" + word.getId() + ";";
+        String request = Request.UPDATE.toString() + "word='" +
+                word.getWord() + "', mean='" +
+                word.getDescription() + "' WHERE dict.id=" + word.getId() + ";";
         statement.executeUpdate(request);
     }
 

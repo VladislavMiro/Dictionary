@@ -8,8 +8,6 @@ import java.sql.SQLException;
 public class AddWordWindowController {
 
     public boolean addWord(String word, String description) {
-        word = "'" + word + "'";
-        description = "'" + description + "'";
         if (DataBaseManger.getDataBaseManager().isConnected()) {
             try {
                 DataBaseManger.getDataBaseManager().insertRequest(new Word(word, description));

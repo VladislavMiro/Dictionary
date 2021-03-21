@@ -162,6 +162,7 @@ public class MainWindowView extends JFrame {
                 resultList.setListData(controller.getNamesArray());
                 textArea.setText(null);
             } else {
+                resultList.setListData(new String[] {});
                 textArea.setText(null);
                 textArea.setText("Ничего не найдено");
             }

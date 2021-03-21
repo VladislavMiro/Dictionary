@@ -66,7 +66,6 @@ public class MainWindowController {
     public boolean isConnected() { return DataBaseManger.getDataBaseManager().isConnected(); }
 
     public boolean searchWord(String key) {
-        key = "'%" + key + "%'";
         try {
             wordsList.clear();
             arrayOfWords = DataBaseManger.getDataBaseManager().selectRequest(key);

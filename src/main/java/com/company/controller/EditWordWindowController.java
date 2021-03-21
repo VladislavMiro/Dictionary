@@ -8,8 +8,6 @@ import java.sql.SQLException;
 public class EditWordWindowController {
 
     public boolean editWord(int idOfWord, String word, String description) {
-        word = "'" + word + "'";
-        description = "'" + description + "'";
         if (DataBaseManger.getDataBaseManager().isConnected()) {
             try {
                 DataBaseManger.getDataBaseManager().updateRequest(new Word(idOfWord, word, description));
