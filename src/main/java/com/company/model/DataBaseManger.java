@@ -41,10 +41,11 @@ public class DataBaseManger {
         ArrayList<Word> array = new ArrayList<>();
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM dict WHERE dict.word ILIKE ?;");
         statement.setString(1, "%" + key + "%");
-        ResultSet request = statement.executeQuery();
 
-        while (request.next()) {
-            array.add(new Word(request.getInt(1), request.getString(2), request.getString(3)));
+        try (ResultSet request = statement.executeQuery()) {
+            while (request.next()) {
+                array.add(new Word(request.getInt(1), request.getString(2), request.getString(3)));
+            }
         }
 
         return array;
